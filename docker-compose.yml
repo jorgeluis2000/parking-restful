@@ -1,0 +1,63 @@
+version: '3.9'
+services:
+  parking-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    container_name: parking
+    ports:
+      - '4600:4600'
+    networks:
+      - connection-micro
+    environment:
+      DB_DIALECT: "postgres"
+      DB_USER: "root"
+      DB_PASS: "root"
+      DB_HOST: "postgres"
+      DB_PORT: 5432
+      DB_NAME: "parking"
+      SECRETKEY: "secret"
+      SECRETKEYTOKEN: "secretkeytoken"
+      MAINWORD: "exampleword"
+      NICK_SERVICE: 'parking'
+      REST_PORT: 4600
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:13
+    restart: always
+    container_name: postgres
+    ports:
+      - '5505:5432'
+    networks:
+      - connection-micro
+    volumes:
+      - 'postgresdata:/var/lib/postgresql/data:rw'
+      - './documents/database/parking.sql:/docker-entrypoint-initdb.d/create_tables.sql'
+    environment:
+      # - DATABASE_HOST=127.0.0.1
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=parking
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: pgadmin
+    volumes:
+      - 'pgadmindata:/var/lib/pgadmin:rw'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - '8700:80'
+    networks:
+      - connection-micro
+volumes:
+  postgresdata:
+    name: postgresdataparking
+  pgadmindata:
+    name: pgadmindata
+networks:
+  connection-micro:
+    name: microservices

@@ -1,0 +1,34 @@
+{
+  "name": "parking",
+  "version": "1.0.0",
+  "description": "Se desarrolla una *API-Rest* para **AVÍATECNOLOGÍA**, la cual se basa en el desarrollo logico del funcionamiento de un parking.",
+  "main": "src/app.js",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "start": "npm run src/app.js"
+  },
+  "keywords": [
+    "parking",
+    "car",
+    "test",
+    "AVÍATECNOLOGÍA"
+  ],
+  "author": "",
+  "license": "GNU GPLv3",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.3",
+    "moment-timezone": "^0.5.34",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.21.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.18"
+  }
+}
