@@ -5,8 +5,9 @@ const TipoVehiculo = db.define(
   "TipoVehiculo",
   {
     id: {
-      type: DataTypes.UUIDV4,
-      primaryKey: true
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
     },
     codigo: {
       type: DataTypes.STRING(5),
@@ -20,9 +21,10 @@ const TipoVehiculo = db.define(
   },
   {
     tableName: "tipo_vehiculo",
-    createdAt: true,
-    updatedAt: true
+    createdAt: false,
+    updatedAt: false
   }
 );
+
 
 export default TipoVehiculo;

@@ -31,7 +31,7 @@ export const tipoEstadoFactura = {
  * Tipos de vehiculos permitidos en el programa
  * @type {TipoVehiculoConst}
  */
-export const tipoVehiculo = {
+export const tipoVehiculoConst = {
     policia: 'POLI',
     ejercito: 'EJER',
     bombero: 'BOMB',

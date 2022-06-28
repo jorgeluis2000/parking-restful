@@ -1,9 +1,11 @@
-import express, {request, response} from "express";
+import express, { response } from "express";
 import cors from "cors";
 import http from "http";
-
+import '../models/asociation.model.js'
 import appRoutes from "../routes/app.routes.js";
 import { security } from "../environments/security.env.js";
+import Estado from "../models/estado.model.js";
+import TipoVehiculo from "../models/tipo_vehiculo.model.js";
 
 /**
  * Clase para crear el servidor de la app.
@@ -41,15 +43,15 @@ class ServerApp {
    */
   middlewares() {
     this.app.use(cors());
-    this.app.use((_, res=response, next) => {
+    this.app.use((_, res = response, next) => {
       res.header('Access-Control-Allow-Origin', '*');
-      res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method, API-KEY-SILVERCREDIT');
+      res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method, PARKING-API-KEY');
       res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
       res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
       next();
     });
-    this.app.use(express.json({limit: '10mb'}));
-    this.app.use(express.urlencoded({limit: '10mb', extended: true}))
+    this.app.use(express.json({ limit: '10mb' }));
+    this.app.use(express.urlencoded({ limit: '10mb', extended: true }))
   }
 
   /**

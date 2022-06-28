@@ -5,11 +5,12 @@ const Factura = db.define(
   "Factura",
   {
     id: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
     vehiculo: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.STRING(15),
       allowNull: false,
     },
     entrada: {
@@ -25,7 +26,7 @@ const Factura = db.define(
       allowNull: true
     },
     estado: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.STRING(5),
       allowNull: true
     },
     valor_total: {

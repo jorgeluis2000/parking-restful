@@ -21,6 +21,7 @@ services:
       SECRETKEYTOKEN: "secretkeytoken"
       MAINWORD: "exampleword"
       NICK_SERVICE: 'parking'
+      TOKEN_AUTH: 'U2FsdGVkX1/XrXx7KETkBETdvpjw5hGzNe/dRH8uPHzC8dUJrLuW3xS1JzK3H+jJHGWwfrjDoqPQerFYZQSGrPzcCRzMh+kFqCI043e6xpb9UhN3QHlsfYgmvtHsFe7OXJiJC2cXlXN+5HfubGAM3Lj16NMhP4iIcmbFfHPmz8w6Bd2M+wil1c2sHQf6AO+ANaefdzKz5KV6BVSZjp4JWhxxI/m0ebdGoCM2gzvR+PZo5JGqHu4dkcVtvmSYDqKfuEKr1wRkG0xM2CnptfULa3obuM/XT1d6CMXx5xAvIWIELj9eK96RqpNV3pIuVY1/CMA+j9K3IrBSabqgGqEkmzfSHoDxPNXo5IH45hqhKxo='
       REST_PORT: 4600
     depends_on:
       - postgres
@@ -34,7 +35,7 @@ services:
       - connection-micro
     volumes:
       - 'postgresdata:/var/lib/postgresql/data:rw'
-      - './documents/database/parking.sql:/docker-entrypoint-initdb.d/create_tables.sql'
+      - './documents/database/parking-db.sql:/docker-entrypoint-initdb.d/create_tables.sql'
     environment:
       # - DATABASE_HOST=127.0.0.1
       - POSTGRES_USER=root

@@ -12,7 +12,7 @@ Se desarrolla una *API-Rest* para **AVÍATECNOLOGÍA**, la cual se basa en el de
 
 Es necesario tener en cuenta que este desarrollo fue hecho en **NodeJS** *v16.13*, si se desea que se ejecute el programa a la perfeccion es necesario tener la misma version de **NodeJS** que se usa en este **Back-end** o si require puede usar el docker-compose ya elaborado para una ejecucion rapida.
 
-Ya cumpliendo con el primer requisito de contemplar la misma version de nodejs, escribir en la ventana de comandos.
+Ya cumpliendo con los anterires requisitos se debe contemplar la misma version de nodejs, escribir en la ventana de comandos.
 
 ```bash
 npm i
@@ -41,4 +41,11 @@ SECRETKEY="secret"
 SECRETKEYTOKEN="secretkeytoken"
 MAINWORD="exampleword"
 REST_PORT=<puerto para el server REST>
+TOKEN_AUTH="<Token de utenticacion>"
 ```
+
+>***IMPORTANTE:*** Para generar el *TOKEN_AUTH* se debe usar el comando
+>```
+>npm run gen-token
+>```
+>y copiar ese token donde se requiere en el **Postman** y en las variables de entorno. Antes de generar el token se debe recordar que es necesario que ya esten definidas las variables de entorno *SECRETKEY*, *SECRETKEYTOKEN* y *MAINWORD*.

@@ -8,7 +8,7 @@ COPY "package-lock.json" "/backend/"
 
 WORKDIR /backend/
 
-RUN npm install --save
+RUN npm ci
 
 COPY . .
 

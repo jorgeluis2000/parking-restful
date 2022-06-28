@@ -1,9 +1,8 @@
-import models from "../../models/asociation.model.js";
+import { request, response } from "express";
 import {
   verifyJsonWebToken,
 } from "../security/security.secure.js";
 import { security } from "../../environments/security.env.js";
-import { request, response } from "express";
 
 /**
  * Resguarda la entrada a la API-Rest para que solo personas autorizadas puedan acceder.
@@ -14,7 +13,7 @@ import { request, response } from "express";
  * @return {response} Devuelve un mensaje de no autorizado si se le niega el acceso http o solo continua para ejcutar peticiones a la API
  */
 const responseGuardianBeared = async (req = request, res = response, next) => {
-  const apiKey = req.headers["api-key-silvercredit"];
+  const apiKey = req.headers["parking-api-key"];
   if (!apiKey && !apiKey?.toLowerCase()?.startsWith("bearer")) {
     return res.status(401).send({
       ok: false,
@@ -24,11 +23,7 @@ const responseGuardianBeared = async (req = request, res = response, next) => {
   }
   const token = apiKey.substring(7);
 
-  try {
-    var accessAuthorization = await models.Authaccess.findOne({
-      where: { nick: security.NICK_SERVICE },
-    });
-  } catch (error) {
+  if (!security.MAINWORD || security.MAINWORD === '') {
     return res.status(401).send({
       ok: false,
       title: "no autorizado",
@@ -36,7 +31,7 @@ const responseGuardianBeared = async (req = request, res = response, next) => {
     });
   }
 
-  if (!verifyJsonWebToken(token, accessAuthorization.key_authaccess)) {
+  if (!verifyJsonWebToken(token, security.MAINWORD)) {
     return res.status(401).send({
       ok: false,
       title: "no autorizado",

@@ -5,8 +5,9 @@ const Estado = db.define(
   "Estado",
   {
     id: {
-      type: DataTypes.UUIDV4,
-      primaryKey: true
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
     },
     codigo: {
       type: DataTypes.STRING(5),
@@ -20,8 +21,8 @@ const Estado = db.define(
   },
   {
     tableName: "estado",
-    createdAt: true,
-    updatedAt: true
+    createdAt: false,
+    updatedAt: false
   }
 );
 

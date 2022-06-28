@@ -1,7 +1,7 @@
-import Estado from "./estado.model";
-import Factura from "./factura.model";
-import TipoVehiculo from "./tipo_vehiculo.model";
-import Vehiculo from "./vehiculo.model";
+import Estado from "./estado.model.js";
+import Factura from "./factura.model.js";
+import TipoVehiculo from "./tipo_vehiculo.model.js";
+import Vehiculo from "./vehiculo.model.js";
 
 
 /* Exportación de los modelos. */
@@ -12,9 +12,10 @@ const models = {
     Vehiculo
 };
 
-Factura.hasMany(Estado, { foreignKey: 'estado' })
-Factura.hasMany(Vehiculo, { foreignKey: 'vehiculo' })
+// Factura.hasMany(Estado, { foreignKey: 'estado' })
+// Factura.hasMany(Vehiculo, { foreignKey: 'vehiculo' })
 
-Vehiculo.hasMany(TipoVehiculo, { foreignKey: 'tipo_vehiculo' })
+// Vehiculo.hasMany(TipoVehiculo, { foreignKey: 'tipo_vehiculo' })
+
 
 export default models;

@@ -5,7 +5,8 @@ const Vehiculo = db.define(
   "Vehiculo",
   {
     id: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
     placa: {
@@ -14,7 +15,7 @@ const Vehiculo = db.define(
       unique: true
     },
     tipo_vehiculo: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.STRING(5),
       allowNull: false,
     },
   },

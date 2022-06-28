@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "Se desarrolla una *API-Rest* para **AVÍATECNOLOGÍA**, la cual se basa en el desarrollo logico del funcionamiento de un parking.",
   "main": "src/app.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon src/app.js",
-    "start": "npm run src/app.js"
+    "dev": "nodemon ./src/app.js",
+    "start": "node ./src/app.js",
+    "gen-token": "node ./src/test/gen_token.js"
   },
   "keywords": [
     "parking",
