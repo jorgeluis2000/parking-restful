@@ -10,5 +10,6 @@ const router = Router();
 router.get('/info', FacturaController.info);
 router.post('/factura-x-fecha', responseGuardianBeared, FacturaController.facturaXFecha);
 router.post('/registro-entrada', responseGuardianBeared, FacturaController.registroEntrada);
+router.post('/registro-salida', responseGuardianBeared, FacturaController.registroSalida);
 
 export default router;

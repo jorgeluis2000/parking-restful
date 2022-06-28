@@ -41,3 +41,10 @@ export const tipoVehiculoConst = {
     automovil_particular: 'AUPA',
     vehiculo_pesado: 'VEPE'
 }
+
+export const vehiculosOficiales = [
+    'POLI',
+    'EJER',
+    'BOMB',
+    'AMBU'
+]
