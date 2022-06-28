@@ -13,8 +13,8 @@ const models = {
 };
 
 // Factura.hasMany(Estado, { foreignKey: 'estado' })
-// Factura.hasMany(Vehiculo, { foreignKey: 'vehiculo' })
-
+// Factura.hasMany(models.Vehiculo, { foreignKey: 'placa' })
+Vehiculo.belongsTo(models.Factura, { foreignKey: 'vehiculo' })
 // Vehiculo.hasMany(TipoVehiculo, { foreignKey: 'tipo_vehiculo' })
 
 

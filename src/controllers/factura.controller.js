@@ -1,16 +1,13 @@
 import { request, response } from "express";
+import { Op, QueryTypes, Sequelize } from "sequelize";
+import sequelize from "sequelize";
+import moment from "moment";
 import models from "../models/asociation.model.js";
-import {
-  encryptSHA256,
-  encrypt,
-  decodeJsonWebToken,
-  createTokenWithExpirence,
-  randomCode,
-  verifyJsonWebToken,
-} from "../utils/security/security.secure.js";
 import "../utils/constans.utils.js"
 import { tipoEstadoFactura, tipoVehiculoConst, vehiculosOficiales } from "../utils/constans.utils.js";
-import moment from "moment";
+import { db } from "../db/connect.database.js";
+
+
 
 export default class FacturaController {
 
@@ -26,7 +23,7 @@ export default class FacturaController {
     });
   }
 
-  static async facturaXFecha(req = request, res = response) {
+  static async facturaTotalYVehiculos(req = request, res = response) {
     /* Comprobando si el cuerpo de la solicitud tiene las propiedades fechaInicio y fechaFin. */
     if (!req.body.fechaInicio || !req.body.fechaFin) {
       return res.status(400).send({
@@ -37,15 +34,44 @@ export default class FacturaController {
     }
 
     const { fechaInicio, fechaFin } = req.body
-
+    const inicio = moment(fechaInicio).subtract(1, 'days')
+    const fin = moment(fechaFin).add(1, 'days')
     try {
-      var reporte = await models.Factura.findAll({
+      var reporte = null
+      var reporteConteo = await models.Factura.findAndCountAll({
         where: {
-          entra: fechaInicio,
-          salida: fechaFin
-        }
+          entrada: {
+            [Op.between]: [
+              inicio,
+              fin
+            ]
+          },
+          estado: tipoEstadoFactura.finalizado
+        },
+        order: [['entrada', 'DESC']],
+        raw: false
       })
 
+      var reporteSuma = await models.Factura.findAll({
+        where: {
+          entrada: {
+            [Op.between]: [
+              inicio,
+              fin
+            ]
+          },
+          estado: tipoEstadoFactura.finalizado
+        },
+        attributes: [
+          'vehiculo',
+          [Sequelize.fn('sum', Sequelize.col('valor_total')), 'total_amount'],
+        ],
+        group: ['vehiculo'],
+        raw: true
+      })
+      let sumaTotal = 0
+      reporteSuma.map(value => sumaTotal += sumaTotal + value.total_amount)
+      reporte = { conteo: reporteConteo.count, costoTotal: sumaTotal }
     } catch (error) {
       return res.status(400).send({
         ok: false,
@@ -59,6 +85,83 @@ export default class FacturaController {
       title: "Reporte generado",
       message: "El reporte por rango de fechas especifico se ha generado satisfactorimente.",
       reporte
+    });
+  }
+
+  static async facturaListaDeParking(req = request, res = response) {
+    /* Comprobando si el cuerpo de la solicitud tiene las propiedades fechaInicio y fechaFin. */
+    if (!req.body.fechaInicio || !req.body.fechaFin) {
+      return res.status(400).send({
+        ok: false,
+        title: "Faltan credenciales",
+        message: "Verifica que hayas colocado el rango de fechas.",
+      });
+    }
+
+    const { fechaInicio, fechaFin } = req.body
+    const inicio = moment(fechaInicio).subtract(1, 'days')
+    const fin = moment(fechaFin).add(1, 'days')
+    try {
+      var reporte = await db.query(`SELECT * FROM (SELECT id, vehiculo, entrada, salida, minutos, estado, valor_total FROM factura WHERE estado = '${tipoEstadoFactura.finalizado}' AND entrada BETWEEN '${inicio}' AND '${fin}' ) as factura INNER JOIN vehiculo ON factura.vehiculo = vehiculo.placa`,
+      {
+        type: QueryTypes.SELECT
+      })
+    } catch (error) {
+      return res.status(400).send({
+        ok: false,
+        title: "Problemas con el servidor",
+        message: "El reporte no se genero, intentalo de nuevo mas tarde.",
+        error
+      });
+    }
+
+    return res.status(200).send({
+      ok: true,
+      title: "Reporte generado",
+      message: "El reporte por rango de fechas especifico se ha generado satisfactorimente.",
+      reporte
+    });
+  }
+  static async todoEnUno(req = request, res = response) {
+    /* Comprobando si el cuerpo de la solicitud tiene las propiedades fechaInicio y fechaFin. */
+    if (!req.body.fechaInicio || !req.body.fechaFin || !req.body.tipoVehiculoB) {
+      return res.status(400).send({
+        ok: false,
+        title: "Faltan credenciales",
+        message: "Verifica que hayas colocado el rango de fechas.",
+      });
+    }
+
+    const { fechaInicio, fechaFin, tipoVehiculoB } = req.body
+    const inicio = moment(fechaInicio).subtract(1, 'days')
+    const fin = moment(fechaFin).add(1, 'days')
+    try {
+      var reporteFull = null
+      var reporte = await db.query(`SELECT * FROM (SELECT id, vehiculo, entrada, salida, minutos, estado, valor_total FROM factura WHERE estado = '${tipoEstadoFactura.finalizado}' AND entrada BETWEEN '${inicio}' AND '${fin}' ) as factura INNER JOIN (SELECT * FROM vehiculo WHERE tipo_vehiculo = '${tipoVehiculoB}') as vehiculo ON factura.vehiculo = vehiculo.placa`,
+      {
+        type: QueryTypes.SELECT
+      })
+      let sumaTotal = 0
+      reporte.map(value => sumaTotal += sumaTotal + value.valor_total)
+      reporteFull = {
+        cantidad: reporte.length,
+        monto_total: sumaTotal,
+        reporte
+      }
+
+    } catch (error) {
+      return res.status(400).send({
+        ok: false,
+        title: "Problemas con el servidor",
+        message: "El reporte no se genero, intentalo de nuevo mas tarde.",
+      });
+    }
+
+    return res.status(200).send({
+      ok: true,
+      title: "Reporte generado",
+      message: "El reporte por rango de fechas especifico se ha generado satisfactorimente.",
+      reporteFull
     });
   }
 

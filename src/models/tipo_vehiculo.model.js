@@ -21,6 +21,7 @@ const TipoVehiculo = db.define(
   },
   {
     tableName: "tipo_vehiculo",
+    modelName: "tipo_vehiculo",
     createdAt: false,
     updatedAt: false
   }

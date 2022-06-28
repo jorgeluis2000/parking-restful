@@ -21,6 +21,7 @@ const Estado = db.define(
   },
   {
     tableName: "estado",
+    modelName: "estado",
     createdAt: false,
     updatedAt: false
   }

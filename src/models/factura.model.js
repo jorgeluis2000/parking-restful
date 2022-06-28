@@ -36,6 +36,7 @@ const Factura = db.define(
   },
   {
     tableName: "factura",
+    modelName: "factura",
     createdAt: true,
     updatedAt: true
   }
