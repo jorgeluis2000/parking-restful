@@ -45,7 +45,21 @@ TOKEN_AUTH="<Token de utenticacion>"
 ```
 
 >***IMPORTANTE:*** Para generar el *TOKEN_AUTH* se debe usar el comando
+>
 >```
 >npm run gen-token
 >```
+>
 >y copiar ese token donde se requiere en el **Postman** y en las variables de entorno. Antes de generar el token se debe recordar que es necesario que ya esten definidas las variables de entorno *SECRETKEY*, *SECRETKEYTOKEN* y *MAINWORD*.
+
+### **Deploy**
+
+Para hacer deployed aqui, existen 2 maneras diferentes.
+
+1. La primera forma es hacer usar el comando *`npm run start`* o *`npm start`*. Asi se ejecutara el primer  deploy.
+
+2. La segunda forma es tener **Docker** y **docker-compose** ya descargados, luego ejecutar el siguiente comando.
+
+```bash
+docker-compose up -d --build
+```

@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes } from "sequelize";
 import { db } from "../db/connect.database.js";
 
+/* Definición del modelo. */
 const Vehiculo = db.define(
   "Vehiculo",
   {

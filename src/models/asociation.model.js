@@ -3,7 +3,6 @@ import Factura from "./factura.model.js";
 import TipoVehiculo from "./tipo_vehiculo.model.js";
 import Vehiculo from "./vehiculo.model.js";
 
-
 /* Exportación de los modelos. */
 const models = {
     Estado,

@@ -1,6 +1,5 @@
 import { request, response } from "express";
 import { Op, QueryTypes, Sequelize } from "sequelize";
-import sequelize from "sequelize";
 import moment from "moment";
 import models from "../models/asociation.model.js";
 import "../utils/constans.utils.js"
@@ -9,12 +8,25 @@ import { db } from "../db/connect.database.js";
 
 
 
+/* Es un controlador que maneja las solicitudes de la API. R: Puede usar el decorador <code>@</code>
+para agregar metadatos a su clase. <code>@Controller(&#39;/factura&#39;) export default class
+FacturaController { // ... }</code> */
 export default class FacturaController {
 
+  /**
+   * La función constructora se llama cuando se crea una instancia de la clase.
+   */
   constructor() { }
 
   // static async authUser(req = request, res = response) {}
 
+  /**
+   * Devuelve una respuesta con un estado de 200 y un objeto JSON con las propiedades ok, título y
+   * mensaje.
+   * @param [req] - El objeto de la solicitud.
+   * @param [res] - El objeto de respuesta.
+   * @returns Se devuelve el objeto de respuesta.
+   */
   static async info(req = request, res = response) {
     return res.status(200).send({
       ok: true,
@@ -23,6 +35,14 @@ export default class FacturaController {
     });
   }
 
+  /**
+   * Devuelve la cantidad total de dinero y el número total de vehículos que han sido atendidos en un
+   * rango de fechas específico.
+   * </código>
+   * @param [req] - solicitud
+   * @param [res] - respuesta
+   * @returns El informe está siendo devuelto.
+   */
   static async facturaTotalYVehiculos(req = request, res = response) {
     /* Comprobando si el cuerpo de la solicitud tiene las propiedades fechaInicio y fechaFin. */
     if (!req.body.fechaInicio || !req.body.fechaFin) {
@@ -88,6 +108,14 @@ export default class FacturaController {
     });
   }
 
+  /**
+   * Devuelve una lista de facturas de un estacionamiento, las cuales están filtradas por un rango de
+   * fechas.
+   * </código>
+   * @param [req] - solicitud
+   * @param [res] - {
+   * @returns La consulta devuelve una matriz de objetos.
+   */
   static async facturaListaDeParking(req = request, res = response) {
     /* Comprobando si el cuerpo de la solicitud tiene las propiedades fechaInicio y fechaFin. */
     if (!req.body.fechaInicio || !req.body.fechaFin) {
@@ -122,6 +150,16 @@ export default class FacturaController {
       reporte
     });
   }
+
+  /**
+   * Recibe una solicitud, verifica si el cuerpo de la solicitud tiene las propiedades fechaInicio y
+   * fechaFin, si no las tiene devuelve una respuesta con un mensaje, si las tiene continúa con la
+   * función.
+   * </código>
+   * @param [req] - solicitud
+   * @param [res] - respuesta
+   * @returns El informe está siendo devuelto.
+   */
   static async todoEnUno(req = request, res = response) {
     /* Comprobando si el cuerpo de la solicitud tiene las propiedades fechaInicio y fechaFin. */
     if (!req.body.fechaInicio || !req.body.fechaFin || !req.body.tipoVehiculoB) {
@@ -165,6 +203,21 @@ export default class FacturaController {
     });
   }
 
+  /**
+   * Recibe una solicitud y una respuesta, y luego verifica si el cuerpo de la solicitud contiene los
+   * campos requeridos, si los tiene, verifica si el tipo de vehículo es válido, si lo es, busca el
+   * vehículo en la base de datos, si es lo encuentra, crea una nueva factura, si no lo encuentra, crea
+   * un nuevo vehículo y luego crea una nueva factura.
+   * </código>
+   * @param [req] - solicitud
+   * @param [res] - {
+   * @returns The response is a JSON object with the following structure:
+   * {
+   *   "ok": true,
+   *   "title": "Entrada registrada",
+   *   "message": "El vehiculo se ha registrado con exito."
+   * }
+   */
   static async registroEntrada(req = request, res = response) {
     if (!req.body.placa || !req.body.tipoVehiculo) {
       return res.status(400).send({
@@ -214,6 +267,18 @@ export default class FacturaController {
     });
   }
 
+  /**
+   * Registra la salida de un vehículo del estacionamiento.
+   * </código>
+   * @param [req] - solicitud
+   * @param [res] - respuesta
+   * @returns La respuesta es un objeto JSON con la siguiente estructura:
+   * {
+   *   "bien": cierto,
+   *   "título": "Iniciado sesión",
+   *   "message": "El pedido ha sido cargado satisfactoriamente."
+   * }
+   */
   static async registroSalida(req = request, res = response) {
     if (!req.body.placa) {
       return res.status(400).send({
